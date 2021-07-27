@@ -1,17 +1,16 @@
 require_relative './cell.rb'
 
 class World
-  def initialize(width:, height:)
-    @width = width
-    @height = height
+  def initialize(config:)
+    @config = config
     @cells = build_cells
   end
 
   def start
-    random_living_cells_count.times
-                             .map { |_| find_at(rand(@width - 1), rand(@height - 1)) }
-                             .compact
-                             .map(&:toggle!)
+    @config.initial_living_count.times
+                                .map { |_| find_at(rand(@config.width - 1), rand(@config.height - 1)) }
+                                .compact
+                                .map(&:toggle!)
   end
 
   def cells
@@ -34,19 +33,19 @@ class World
 
   def build_cells
     cells = []
-    @height.times.each { |y_idx| cells.push(build_row(y_idx)) }
+    @config.height
+           .times
+           .each { |y_idx| cells.push(build_row(y_idx)) }
 
     cells
   end
 
   def build_row(y_idx)
     row = []
-    @width.times.each { |x_idx| row.push(::Cell.new(world: self, x: x_idx, y: y_idx)) }
+    @config.width
+           .times
+           .each { |x_idx| row.push(::Cell.new(world: self, x: x_idx, y: y_idx)) }
 
     row
-  end
-
-  def random_living_cells_count
-    (@width / 2).times.map { |i| rand(@height) }.sum
   end
 end

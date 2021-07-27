@@ -1,7 +1,9 @@
 require 'world'
+require 'config'
 
 RSpec.describe World do
-  let(:world) { described_class.new(width: width, height: height) }
+  let(:config) { Config.new(width: width, height: height) }
+  let(:world) { described_class.new(config: config) }
   let(:width) { 10 }
   let(:height) { 10 }
 

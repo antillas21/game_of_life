@@ -1,8 +1,10 @@
 require 'cell'
 require 'world'
+require 'config'
 
 RSpec.describe Cell do
-  let(:cell) { Cell.new(world: World.new(height: 10, width: 10), x: x, y: y) }
+  let(:config) { Config.new(height: 10, width: 10) }
+  let(:cell) { Cell.new(world: World.new(config: config), x: x, y: y) }
   let(:x) { 3 }
   let(:y) { 4 }
 
@@ -63,7 +65,8 @@ RSpec.describe Cell do
   end
 
   describe '#neighbors' do
-    let(:world) { World.new(width: 5, height: 5) }
+    let(:config) { Config.new(width: 5, height: 5) }
+    let(:world) { World.new(config: config) }
     let(:cell) { world.find_at(3, 3) }
 
     subject { cell.neighbors.map(&:coordinates) }
