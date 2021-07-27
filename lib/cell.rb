@@ -32,6 +32,10 @@ class Cell
                            .compact
   end
 
+  def inspect
+    "#<Cell:#{"0x00%x" % (object_id << 1)} @x=#{@x}, @y=#{@y}, @living=#{@living}>"
+  end
+
   private
 
   def neighboring_coordinates

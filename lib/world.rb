@@ -20,15 +20,19 @@ class World
   end
 
   def living_cells
-    cells.select(&:alive?)
+    filter(:alive?)
   end
 
   def dead_cells
-    cells.select(&:dead?)
+    filter(:dead?)
   end
 
-  def filter(method)
-    cells.select(&method)
+  def filter(status)
+    cells.select(&status)
+  end
+
+  def inspect
+    "#<World:#{"0x00%x" % (object_id << 1)}>"
   end
 
   private
