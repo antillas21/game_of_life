@@ -7,10 +7,8 @@ class World
   end
 
   def start
-    @config.initial_living_count.times
-                                .map { |_| find_at(rand(@config.width - 1), rand(@config.height - 1)) }
-                                .compact
-                                .map(&:toggle!)
+    cells.sample(@config.initial_living_count)
+         .map(&:toggle!)
   end
 
   def cells
@@ -27,6 +25,10 @@ class World
 
   def dead_cells
     cells.select(&:dead?)
+  end
+
+  def filter(method)
+    cells.select(&method)
   end
 
   private
