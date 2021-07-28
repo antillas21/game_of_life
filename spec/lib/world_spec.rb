@@ -1,11 +1,16 @@
 require 'world'
-require 'config'
 
 RSpec.describe World do
-  let(:config) { Config.new(width: width, height: height) }
+  let(:config) do
+    instance_double('Config',
+                    width: width,
+                    height: height,
+                    initial_living_count: initial_count)
+  end
   let(:world) { described_class.new(config: config) }
   let(:width) { 10 }
   let(:height) { 10 }
+  let(:initial_count) { 35 }
 
   it 'has width x height cells' do
     expect(world.cells.size).to eq(width * height)
