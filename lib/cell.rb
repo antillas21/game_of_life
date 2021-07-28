@@ -27,6 +27,10 @@ class Cell
     }
   end
 
+  def alive_neighbors
+    neighbors.select(&:alive?)
+  end
+
   def neighbors
     neighboring_coordinates.map { |x, y| @world.find_at(x, y) }
                            .compact

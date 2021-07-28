@@ -91,4 +91,35 @@ RSpec.describe Cell do
       ])
     end
   end
+
+  describe '#alive_neighbors' do
+    subject { cell.alive_neighbors }
+
+    let(:cell) { Cell.new(world: world, x: x, y: y) }
+    let(:neighbors) { alive_neighbors + dead_neighbors }
+    let(:alive_neighbors) do
+      [
+        instance_double('Cell', alive?: true),
+        instance_double('Cell', alive?: true),
+        instance_double('Cell', alive?: true)
+      ]
+    end
+    let(:dead_neighbors) do
+      [
+        instance_double('Cell', alive?: false),
+        instance_double('Cell', alive?: false),
+        instance_double('Cell', alive?: false),
+        instance_double('Cell', alive?: false),
+        instance_double('Cell', alive?: false)
+      ]
+    end
+
+    before do
+      allow(cell).to receive(:neighbors).and_return(neighbors)
+    end
+
+    it 'retrieves only neighbors who are alive' do
+      expect(subject).to match_array(alive_neighbors)
+    end
+  end
 end
