@@ -8,10 +8,10 @@ class World
 
   setting :width, 10
   setting :height, 10
+  setting :rules, ::Rules::Base.registry
 
   def initialize
     @cells = build_cells
-    @rules_klasses = ::Rules::Base.registry
   end
 
   def setup(cells: cells_list)
@@ -25,10 +25,10 @@ class World
 
   def play(iterations:)
     iterations.times do
-      @rules_klasses.map { |rule_klass| rule_klass.new(world: self) }
-                    .map(&:apply)
-                    .flatten
-                    .map(&:toggle!)
+      config.rules.map { |rule_klass| rule_klass.new(world: self) }
+                  .map(&:apply)
+                  .flatten
+                  .map(&:toggle!)
     end
   end
 
