@@ -1,16 +1,20 @@
+require 'dry-configurable'
+
 require_relative './cell'
 require_relative './rules'
 
 class World
-  def initialize(config:)
-    @config = config
+  include Dry::Configurable
+
+  setting :width, 10
+  setting :height, 10
+
+  def initialize
     @cells = build_cells
     @rules_klasses = ::Rules::Base.registry
   end
 
   def start
-    cells.sample(@config.initial_living_count)
-         .map(&:toggle!)
   end
 
   def play(iterations:)
