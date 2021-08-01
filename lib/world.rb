@@ -14,7 +14,13 @@ class World
     @rules_klasses = ::Rules::Base.registry
   end
 
-  def start
+  def setup(cells: cells_list)
+    cells.each do |coords|
+      cell = find_at(coords[:x], coords[:y])
+      return unless cell
+
+      cell.toggle!
+    end
   end
 
   def play(iterations:)

@@ -1,20 +1,7 @@
 require 'world'
 
 RSpec.describe World do
-  let(:config) do
-    instance_double('Config',
-                    width: width,
-                    height: height,
-                    initial_living_count: initial_count)
-  end
-  let(:world) { described_class.new(config: config) }
-  let(:width) { 10 }
-  let(:height) { 10 }
-  let(:initial_count) { 35 }
-
-  it 'has width x height cells' do
-    expect(world.cells.size).to eq(width * height)
-  end
+  let(:world) { described_class.new }
 
   describe '#find_at' do
     subject { world.find_at(x, y) }
@@ -50,12 +37,29 @@ RSpec.describe World do
     end
   end
 
-  describe '#start' do
-    subject { world.start }
+  describe '#setup' do
+    subject { world.setup(cells: cells_list) }
 
-    it 'sets a random set of cells to alive' do
+    let(:cells_list) { [cell_a, cell_b] }
+    let(:cell_a) { { x: 1, y: 1 } }
+    let(:cell_b) { { x: 2, y: 2 } }
+
+    it 'sets a group of cells to alive' do
       subject
       expect(world.living_cells).to_not be_empty
+    end
+
+    it 'sets the cells in argument to alive' do
+      subject
+      expect(world.living_cells.map(&:coordinates)).to match_array([cell_a, cell_b])
+    end
+
+    context 'with invalid coordinate' do
+      let(:cell_b) { { x: -1, y: -1 } }
+
+      it 'ignores cell coordinate' do
+        expect { subject }.to_not raise_error
+      end
     end
   end
 
