@@ -58,4 +58,15 @@ RSpec.describe World do
       expect(world.living_cells).to_not be_empty
     end
   end
+
+  describe '#play' do
+    subject { world.play(iterations: iterations) }
+
+    let(:iterations) { 2 }
+    let!(:rules_klasses) { Rules::Base.registry }
+
+    it 'requires iterations argument' do
+      expect { world.play }.to raise_error(ArgumentError)
+    end
+  end
 end

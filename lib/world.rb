@@ -1,15 +1,27 @@
-require_relative './cell.rb'
+require_relative './cell'
+require_relative './rules'
 
 class World
   def initialize(config:)
     @config = config
     @cells = build_cells
+    @rules_klasses = ::Rules::Base.registry
   end
 
   def start
     cells.sample(@config.initial_living_count)
          .map(&:toggle!)
   end
+
+  def play(iterations:)
+    iterations.times do
+      @rules_klasses.map { |rule_klass| rule_klass.new(world: self) }
+                    .map(&:apply)
+                    .flatten
+                    .map(&:toggle!)
+    end
+  end
+
 
   def cells
     @cells.flatten
